@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const categories = ['local inference', 'models', 'tooling'] as const;
+const categoryCounts: Record<string, number> = { all: allPosts.length };
+for (const cat of categories) {
+	categoryCounts[cat] = allPosts.filter(p => p.data.category === cat).length;
+}
+
+function getReadingTime(body: string): number {
+	const words = body.split(/\s+/).length;
+	return Math.ceil(words / 200);
+}
+---
+
+<BaseLayout title="Archive" currentPath="/archive">
+	<section class="archive container">
+		<div class="archive-header">
+			<p class="breadcrumb">// archive</p>
+			<h1>Everything we've published.</h1>
+			<p class="archive-subtitle">{allPosts.length} posts across {categories.length} categories, sorted newest first.</p>
+		</div>
+
+		<div class="filter-tabs" id="filter-tabs">
+			<button class="tab active" data-filter="all">all ({categoryCounts.all})</button>
+			{categories.map(cat => (
+				<button class="tab" data-filter={cat}>
+					{cat} ({categoryCounts[cat]})
+				</button>
+			))}
+		</div>
+
+		<div class="post-list" id="post-list">
+			{allPosts.map(post => (
+				<PostCard
+					title={post.data.title}
+					date={post.data.date}
+					category={post.data.category}
+					excerpt={post.data.excerpt}
+					slug={post.id}
+					readingTime={getReadingTime(post.body ?? '')}
+				/>
+			))}
+		</div>
+	</section>
+</BaseLayout>
+
+<script>
+	const tabs = document.querySelectorAll<HTMLButtonElement>('.tab');
+	const cards = document.querySelectorAll<HTMLElement>('.post-card');
+
+	tabs.forEach(tab => {
+		tab.addEventListener('click', () => {
+			tabs.forEach(t => t.classList.remove('active'));
+			tab.classList.add('active');
+
+			const filter = tab.dataset.filter;
+
+			cards.forEach(card => {
+				if (filter === 'all' || card.dataset.category === filter) {
+					card.style.display = '';
+				} else {
+					card.style.display = 'none';
+				}
+			});
+		});
+	});
+</script>
+
+<style>
+	.archive {
+		padding-top: 3rem;
+		padding-bottom: 3rem;
+	}
+
+	.breadcrumb {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-bottom: 0.5rem;
+	}
+
+	.archive-header h1 {
+		font-size: 2.25rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.archive-subtitle {
+		font-size: 0.95rem;
+		color: var(--text-secondary);
+		margin-bottom: 2rem;
+	}
+
+	.filter-tabs {
+		display: flex;
+		gap: 0.5rem;
+		margin-bottom: 1.5rem;
+		flex-wrap: wrap;
+	}
+
+	.tab {
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		font-size: 0.85rem;
+		color: var(--text-secondary);
+		background: transparent;
+		border: 1px solid var(--border);
+		transition: all 0.15s ease;
+		text-transform: lowercase;
+	}
+
+	.tab:hover {
+		color: var(--text-primary);
+		border-color: var(--text-secondary);
+	}
+
+	.tab.active {
+		background: var(--text-primary);
+		color: var(--bg);
+		border-color: var(--text-primary);
+	}
+
+	.post-list {
+		display: flex;
+		flex-direction: column;
+	}
+</style>

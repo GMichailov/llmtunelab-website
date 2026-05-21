@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About" currentPath="/about">
+	<section class="about narrow container">
+		<p class="breadcrumb">// about</p>
+		<h1>About the lab</h1>
+
+		<p>
+			LLM Tune Lab is a technical notebook for people who work with open-weight language models — the ones doing the fine-tuning, the quantizing, the eval-running, and the debugging at 2 AM when the inference server silently OOMs.
+		</p>
+
+		<h2>What we cover</h2>
+
+		<ul>
+			<li><strong>Local inference</strong> — running large models on consumer hardware, quantization recipes, serving setups</li>
+			<li><strong>Models</strong> — architecture deep-dives, training tricks, speculative decoding, context length engineering</li>
+			<li><strong>Tooling</strong> — eval harnesses, training pipelines, debug workflows, the infrastructure that makes everything else possible</li>
+		</ul>
+
+		<h2>Why this exists</h2>
+
+		<p>
+			Most LLM content is either high-level product announcements or low-level research papers. The middle ground — the practical, tested, "here's what actually worked on my hardware" territory — is underserved. This lab fills that gap.
+		</p>
+
+		<p>
+			Every post is based on direct experience. No sponsored content, no affiliate links, no "top 10 AI tools" listicles.
+		</p>
+
+		<h2>Get in touch</h2>
+
+		<p>
+			Find us on <a href="https://github.com/llmtunelab">GitHub</a> or subscribe to the <a href="/rss.xml">RSS feed</a> to stay updated.
+		</p>
+	</section>
+</BaseLayout>
+
+<style>
+	.about {
+		padding-top: 3rem;
+		padding-bottom: 3rem;
+	}
+
+	.breadcrumb {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-bottom: 0.5rem;
+	}
+
+	.about h1 {
+		font-size: 2.25rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.about h2 {
+		font-size: 1.35rem;
+		margin-top: 2.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.about p {
+		margin-bottom: 1.25rem;
+		line-height: 1.7;
+		color: var(--text-secondary);
+	}
+
+	.about ul {
+		padding-left: 1.25rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.about li {
+		margin-bottom: 0.5rem;
+		line-height: 1.6;
+		color: var(--text-secondary);
+	}
+
+	.about strong {
+		color: var(--text-primary);
+	}
+
+	.about a {
+		color: var(--accent);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.about a:hover {
+		color: var(--text-primary);
+	}
+</style>

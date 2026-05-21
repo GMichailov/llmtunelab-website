@@ -1,0 +1,102 @@
+---
+interface Props {
+	currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const navLinks = [
+	{ href: '/', label: 'index' },
+	{ href: '/archive', label: 'archive' },
+	{ href: '/about', label: 'about' },
+];
+---
+
+<header class="nav-header">
+	<a href="/" class="logo">
+		<img src="/logo_clear.png" alt="LLM Tune Lab" class="logo-img" />
+		<span class="logo-text">LLM Tune <span class="accent">Lab</span></span>
+	</a>
+	<div class="nav-right container">
+		<nav class="nav-links">
+			{navLinks.map(link => (
+				<a
+					href={link.href}
+					class:list={['nav-link', { active: currentPath === link.href }]}
+				>
+					{link.label}
+				</a>
+			))}
+		</nav>
+		<div class="nav-divider"><div class="divider-line"></div></div>
+	</div>
+</header>
+
+<style>
+	.nav-header {
+		position: relative;
+		display: flex;
+		align-items: flex-start;
+	}
+
+	.logo {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 1rem 1.25rem;
+		background: var(--bg);
+		z-index: 1;
+		color: var(--text-primary);
+		font-weight: 600;
+		font-size: 0.95rem;
+	}
+
+	.logo:hover {
+		color: var(--text-primary);
+	}
+
+	.logo-img {
+		height: 1.5rem;
+		width: auto;
+		display: block;
+	}
+
+	.logo-text {
+		letter-spacing: -0.01em;
+	}
+
+	.nav-right {
+		width: 100%;
+	}
+
+	.nav-links {
+		display: flex;
+		justify-content: flex-end;
+		gap: 1.5rem;
+		padding-top: 1rem;
+	}
+
+	.nav-link {
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-muted);
+	}
+
+	.nav-link:hover,
+	.nav-link.active {
+		color: var(--text-primary);
+	}
+
+	.nav-divider {
+		margin-top: 1.25rem;
+	}
+
+	.divider-line {
+		height: 1px;
+		background: var(--border);
+	}
+</style>

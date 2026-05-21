@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const recentPosts = allPosts.slice(0, 3);
+
+function getReadingTime(body: string): number {
+	const words = body.split(/\s+/).length;
+	return Math.ceil(words / 200);
+}
+---
+
+<BaseLayout title="Home" currentPath="/">
+	<section class="hero container">
+		<p class="hero-sub">Analyzing and Pushing the Frontiers of AI &middot; est. 2025</p>
+		<h1 class="hero-title">
+			Field notes from <span class="accent">tuning</span>, <span class="accent">evaluating</span>, and <span class="accent">serving</span> open-weight LLMs.
+		</h1>
+		<p class="hero-desc">
+			LoRA recipes, evaluation harnesses, quantization trade-offs, and the parts of the stack that don't make it into the announcement posts. Published when there's something measured to say.
+		</p>
+		<div class="hero-cta">
+			<a href={recentPosts.length > 0 ? `/posts/${recentPosts[0].id}` : '/archive'} class="btn btn-primary">read latest &rarr;</a>
+			<a href="/archive" class="btn btn-secondary">browse archive</a>
+		</div>
+	</section>
+
+	<section class="recent container">
+		<div class="recent-header">
+			<span class="section-label">// recent</span>
+			<a href="/archive" class="all-link">all posts ({allPosts.length}) &rarr;</a>
+		</div>
+		<div class="recent-posts">
+			{recentPosts.map(post => (
+				<PostCard
+					title={post.data.title}
+					date={post.data.date}
+					category={post.data.category}
+					excerpt={post.data.excerpt}
+					slug={post.id}
+					readingTime={getReadingTime(post.body ?? '')}
+				/>
+			))}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.hero {
+		text-align: center;
+		padding-top: 5rem;
+		padding-bottom: 4rem;
+	}
+
+	.hero-sub {
+		font-size: 0.9rem;
+		color: var(--text-muted);
+		margin-bottom: 1.5rem;
+		font-style: italic;
+	}
+
+	.hero-title {
+		font-size: 2.75rem;
+		line-height: 1.25;
+		max-width: 720px;
+		margin: 0 auto 1.5rem;
+		font-weight: 700;
+	}
+
+	.hero-desc {
+		font-size: 1.1rem;
+		color: var(--text-secondary);
+		max-width: 600px;
+		margin: 0 auto 2.5rem;
+		line-height: 1.7;
+	}
+
+	.hero-cta {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+	}
+
+	.btn {
+		padding: 0.75rem 1.5rem;
+		border-radius: 4px;
+		font-size: 0.9rem;
+		font-weight: 500;
+		transition: all 0.15s ease;
+	}
+
+	.btn-primary {
+		background: var(--accent);
+		color: var(--text-primary);
+	}
+
+	.btn-primary:hover {
+		opacity: 0.85;
+		color: var(--text-primary);
+	}
+
+	.btn-secondary {
+		border: 1px solid var(--accent);
+		color: var(--text-secondary);
+	}
+
+	.btn-secondary:hover {
+		background: var(--accent);
+		color: var(--text-primary);
+		border-color: var(--accent);
+	}
+
+	.recent {
+		padding-top: 2.5rem;
+	}
+
+	.recent-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.75rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.section-label {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+	}
+
+	.all-link {
+		font-size: 0.9rem;
+		color: var(--accent);
+	}
+
+	.all-link:hover {
+		color: var(--text-primary);
+	}
+
+	@media (max-width: 640px) {
+		.hero-title {
+			font-size: 2rem;
+		}
+		.hero {
+			padding-top: 3.5rem;
+			padding-bottom: 3rem;
+		}
+	}
+</style>

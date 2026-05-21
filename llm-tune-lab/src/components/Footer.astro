@@ -1,0 +1,169 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+	<div class="container">
+		<div class="footer-divider"></div>
+
+		<div class="subscribe-section">
+			<p class="section-label">// subscribe</p>
+			<form class="subscribe-form" action="#" method="post">
+				<input type="email" placeholder="you@domain.tld" required />
+				<button type="submit">send &rarr;</button>
+			</form>
+			<p class="subscribe-note">One short email per post. No tracking, no list-rental, unsubscribe with one click.</p>
+		</div>
+
+		<div class="footer-bottom">
+			<div class="footer-brand">
+				<img src="/logo_clear.png" alt="LLM Tune Lab" class="footer-logo-img" />
+				<span>LLM Tune <span class="accent">Lab</span></span>
+			</div>
+			<p class="tagline">Field notes from the lab &ndash; fine-tuning, evaluation, and inference for open-weight LLMs.</p>
+		</div>
+
+		<div class="footer-links">
+			<a href="/rss.xml">rss</a>
+			<a href="https://github.com/llmtunelab">github</a>
+			<a href="/archive">archive</a>
+		</div>
+
+		<div class="footer-meta">
+			<span>&copy; {year} llm tune lab</span>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.footer {
+		margin-top: 4rem;
+		padding-bottom: 2.5rem;
+	}
+
+	.footer-divider {
+		height: 1px;
+		background: var(--border);
+		margin-bottom: 2.5rem;
+	}
+
+	.subscribe-section {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+
+	.section-label {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-bottom: 1rem;
+	}
+
+	.subscribe-form {
+		display: flex;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.subscribe-form input {
+		background: var(--code-bg);
+		border: 1px solid var(--border);
+		border-radius: 4px;
+		padding: 0.65rem 1rem;
+		color: var(--text-primary);
+		font-size: 0.9rem;
+		width: 320px;
+	}
+
+	.subscribe-form input::placeholder {
+		color: var(--text-muted);
+	}
+
+	.subscribe-form input:focus {
+		outline: none;
+		border-color: var(--accent);
+	}
+
+	.subscribe-form button {
+		background: var(--accent);
+		color: var(--text-primary);
+		padding: 0.65rem 1.25rem;
+		border-radius: 4px;
+		font-size: 0.9rem;
+		font-weight: 500;
+		transition: opacity 0.15s ease;
+	}
+
+	.subscribe-form button:hover {
+		opacity: 0.85;
+	}
+
+	.subscribe-note {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		margin-top: 0.75rem;
+	}
+
+	.footer-bottom {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 1.5rem;
+	}
+
+	.footer-brand {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.95rem;
+		color: var(--text-primary);
+		font-weight: 600;
+	}
+
+	.footer-logo-img {
+		height: 1.25rem;
+		width: auto;
+		display: block;
+	}
+
+	.tagline {
+		font-size: 0.85rem;
+		max-width: 400px;
+		text-align: right;
+		line-height: 1.5;
+		color: var(--text-secondary);
+	}
+
+	.footer-links {
+		display: flex;
+		gap: 1.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.footer-links a {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		text-transform: lowercase;
+	}
+
+	.footer-links a:hover {
+		color: var(--accent);
+	}
+
+	.footer-meta {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 640px) {
+		.footer-bottom {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+		.tagline {
+			text-align: left;
+		}
+		.subscribe-form input {
+			width: 220px;
+		}
+	}
+</style>

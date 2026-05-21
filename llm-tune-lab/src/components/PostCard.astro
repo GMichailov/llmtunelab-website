@@ -1,0 +1,78 @@
+---
+interface Props {
+	title: string;
+	date: Date;
+	category: string;
+	excerpt: string;
+	slug: string;
+	readingTime?: number;
+}
+
+const { title, date, category, excerpt, slug, readingTime } = Astro.props;
+
+const formattedDate = date.toISOString().slice(0, 10);
+---
+
+<article class="post-card" data-category={category}>
+	<div class="post-meta">
+		<span class="post-date">{formattedDate}</span>
+		<span class="post-meta-right">
+			<span class="post-category">{category}</span>
+			{readingTime && <span class="post-reading-time">{readingTime} min</span>}
+		</span>
+	</div>
+	<h3 class="post-title">
+		<a href={`/posts/${slug}`}>{title}</a>
+	</h3>
+	<p class="post-excerpt">{excerpt}</p>
+	<div class="post-divider"></div>
+</article>
+
+<style>
+	.post-card {
+		padding: 1.5rem 0;
+	}
+
+	.post-meta {
+		display: flex;
+		justify-content: space-between;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-bottom: 0.5rem;
+	}
+
+	.post-meta-right {
+		display: flex;
+		gap: 1rem;
+	}
+
+	.post-category {
+		color: var(--accent);
+	}
+
+	.post-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
+
+	.post-title a {
+		color: var(--text-primary);
+	}
+
+	.post-title a:hover {
+		color: var(--accent);
+	}
+
+	.post-excerpt {
+		font-size: 1rem;
+		color: var(--text-secondary);
+		line-height: 1.6;
+	}
+
+	.post-divider {
+		height: 1px;
+		background: var(--border);
+		margin-top: 1.5rem;
+	}
+</style>
