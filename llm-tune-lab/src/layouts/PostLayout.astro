@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { title, date, category, excerpt } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const formattedDate = date.toISOString().slice(0, 10);
 ---
@@ -16,7 +17,7 @@ const formattedDate = date.toISOString().slice(0, 10);
 <BaseLayout title={title} description={excerpt} currentPath={`/posts/${Astro.params.slug}`}>
 	<article class="post narrow container">
 		<header class="post-header">
-			<a href="/archive" class="back-link">&larr; archive</a>
+			<a href={base + 'archive'} class="back-link">&larr; archive</a>
 			<div class="post-meta">
 				<span class="post-date">{formattedDate}</span>
 				<span class="post-category">{category}</span>

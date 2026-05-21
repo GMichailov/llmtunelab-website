@@ -4,6 +4,7 @@ interface Props {
 }
 
 const { currentPath = '/' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const navLinks = [
 	{ href: '/', label: 'index' },
@@ -13,15 +14,15 @@ const navLinks = [
 ---
 
 <header class="nav-header">
-	<a href="/" class="logo">
-		<img src="/logo_clear.png" alt="LLM Tune Lab" class="logo-img" />
+	<a href={base} class="logo">
+		<img src={base + 'logo_clear.png'} alt="LLM Tune Lab" class="logo-img" />
 		<span class="logo-text">LLM Tune <span class="accent">Lab</span></span>
 	</a>
 	<div class="nav-right container">
 		<nav class="nav-links">
 			{navLinks.map(link => (
 				<a
-					href={link.href}
+					href={base + link.href.slice(1)}
 					class:list={['nav-link', { active: currentPath === link.href }]}
 				>
 					{link.label}

@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { title, date, category, excerpt, slug, readingTime } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const formattedDate = date.toISOString().slice(0, 10);
 ---
@@ -22,7 +23,7 @@ const formattedDate = date.toISOString().slice(0, 10);
 		</span>
 	</div>
 	<h3 class="post-title">
-		<a href={`/posts/${slug}`}>{title}</a>
+		<a href={base + 'posts/' + slug}>{title}</a>
 	</h3>
 	<p class="post-excerpt">{excerpt}</p>
 	<div class="post-divider"></div>

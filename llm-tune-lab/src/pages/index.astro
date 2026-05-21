@@ -12,6 +12,8 @@ function getReadingTime(body: string): number {
 	const words = body.split(/\s+/).length;
 	return Math.ceil(words / 200);
 }
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
 <BaseLayout title="Home" currentPath="/">
@@ -24,15 +26,15 @@ function getReadingTime(body: string): number {
 			LoRA recipes, evaluation harnesses, quantization trade-offs, and the parts of the stack that don't make it into the announcement posts. Published when there's something measured to say.
 		</p>
 		<div class="hero-cta">
-			<a href={recentPosts.length > 0 ? `/posts/${recentPosts[0].id}` : '/archive'} class="btn btn-primary">read latest &rarr;</a>
-			<a href="/archive" class="btn btn-secondary">browse archive</a>
+			<a href={recentPosts.length > 0 ? base + 'posts/' + recentPosts[0].id : base + 'archive'} class="btn btn-primary">read latest &rarr;</a>
+				<a href={base + 'archive'} class="btn btn-secondary">browse archive</a>
 		</div>
 	</section>
 
 	<section class="recent container">
 		<div class="recent-header">
 			<span class="section-label">// recent</span>
-			<a href="/archive" class="all-link">all posts ({allPosts.length}) &rarr;</a>
+			<a href={base + 'archive'} class="all-link">all posts ({allPosts.length}) &rarr;</a>
 		</div>
 		<div class="recent-posts">
 			{recentPosts.map(post => (

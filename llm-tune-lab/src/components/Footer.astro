@@ -1,5 +1,6 @@
 ---
 const year = new Date().getFullYear();
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
 <footer class="footer">
@@ -17,16 +18,16 @@ const year = new Date().getFullYear();
 
 		<div class="footer-bottom">
 			<div class="footer-brand">
-				<img src="/logo_clear.png" alt="LLM Tune Lab" class="footer-logo-img" />
+				<img src={base + 'logo_clear.png'} alt="LLM Tune Lab" class="footer-logo-img" />
 				<span>LLM Tune <span class="accent">Lab</span></span>
 			</div>
 			<p class="tagline">Field notes from the lab &ndash; fine-tuning, evaluation, and inference for open-weight LLMs.</p>
 		</div>
 
 		<div class="footer-links">
-			<a href="/rss.xml">rss</a>
+			<a href={base + 'rss.xml'}>rss</a>
 			<a href="https://github.com/llmtunelab">github</a>
-			<a href="/archive">archive</a>
+			<a href={base + 'archive'}>archive</a>
 		</div>
 
 		<div class="footer-meta">

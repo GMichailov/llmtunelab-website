@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
 <BaseLayout title="About" currentPath="/about">
@@ -32,7 +33,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		<h2>Get in touch</h2>
 
 		<p>
-			Find us on <a href="https://github.com/llmtunelab">GitHub</a> or subscribe to the <a href="/rss.xml">RSS feed</a> to stay updated.
+			Find us on <a href="https://github.com/llmtunelab">GitHub</a> or subscribe to the <a href={base + 'rss.xml'}>RSS feed</a> to stay updated.
 		</p>
 	</section>
 </BaseLayout>
