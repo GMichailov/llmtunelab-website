@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects', ({ data }) => !data.draft);
+allProjects.sort((a, b) => {
+	const dateA = a.data.updated ?? a.data.date;
+	const dateB = b.data.updated ?? b.data.date;
+	return dateB.getTime() - dateA.getTime();
+});
+
+const statuses = ['active', 'in-progress', 'completed', 'on-hold'] as const;
+const statusCounts: Record<string, number> = { all: allProjects.length };
+for (const s of statuses) {
+	statusCounts[s] = allProjects.filter(p => p.data.status === s).length;
+}
+---
+
+<BaseLayout title="Research" currentPath="/research">
+	<section class="research container">
+		<div class="research-header">
+			<p class="breadcrumb">// research</p>
+			<h1>Projects & experiments</h1>
+			<p class="research-subtitle">{allProjects.length} active projects and research efforts.</p>
+		</div>
+
+		<div class="filter-tabs" id="filter-tabs">
+			<button class="tab active" data-filter="all">all ({statusCounts.all})</button>
+			{statuses.filter(s => statusCounts[s] > 0).map(s => (
+				<button class="tab" data-filter={s}>
+					{s} ({statusCounts[s]})
+				</button>
+			))}
+		</div>
+
+		<div class="project-grid" id="project-grid">
+			{allProjects.map(project => (
+				<ProjectCard
+					title={project.data.title}
+					description={project.data.description}
+					status={project.data.status}
+					tags={project.data.tags}
+					links={project.data.links}
+					date={project.data.date}
+					updated={project.data.updated}
+					slug={project.id}
+				/>
+			))}
+		</div>
+	</section>
+</BaseLayout>
+
+<script>
+	const tabs = document.querySelectorAll<HTMLButtonElement>('.tab');
+	const cards = document.querySelectorAll<HTMLElement>('.project-card');
+
+	tabs.forEach(tab => {
+		tab.addEventListener('click', () => {
+			tabs.forEach(t => t.classList.remove('active'));
+			tab.classList.add('active');
+
+			const filter = tab.dataset.filter;
+
+			cards.forEach(card => {
+				if (filter === 'all' || card.dataset.status === filter) {
+					card.style.display = '';
+				} else {
+					card.style.display = 'none';
+				}
+			});
+		});
+	});
+</script>
+
+<style>
+	.research {
+		padding-top: 3rem;
+		padding-bottom: 3rem;
+	}
+
+	.breadcrumb {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-bottom: 0.5rem;
+	}
+
+	.research-header h1 {
+		font-size: 2.25rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.research-subtitle {
+		font-size: 0.95rem;
+		color: var(--text-secondary);
+		margin-bottom: 2rem;
+	}
+
+	.filter-tabs {
+		display: flex;
+		gap: 0.5rem;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.tab {
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		font-size: 0.85rem;
+		color: var(--text-secondary);
+		background: transparent;
+		border: 1px solid var(--border);
+		transition: all 0.15s ease;
+		text-transform: lowercase;
+	}
+
+	.tab:hover {
+		color: var(--text-primary);
+		border-color: var(--text-secondary);
+	}
+
+	.tab.active {
+		background: var(--text-primary);
+		color: var(--bg);
+		border-color: var(--text-primary);
+	}
+
+	.project-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.5rem;
+	}
+
+	@media (max-width: 768px) {
+		.project-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

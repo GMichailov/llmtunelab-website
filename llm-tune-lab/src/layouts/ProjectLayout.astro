@@ -1,0 +1,230 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	status: string;
+	tags: string[];
+	links?: {
+		github?: string;
+		paper?: string;
+		demo?: string;
+	};
+	date: Date;
+	updated?: Date;
+}
+
+const { title, description, status, tags, links, date, updated } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const formattedDate = date.toISOString().slice(0, 10);
+const formattedUpdated = updated ? updated.toISOString().slice(0, 10) : null;
+
+const statusLabel: Record<string, string> = {
+	'active': 'active',
+	'in-progress': 'in progress',
+	'completed': 'completed',
+	'on-hold': 'on hold',
+};
+---
+
+<BaseLayout title={title} description={description} currentPath={`/projects/${Astro.params.slug}`}>
+	<article class="project narrow container">
+		<header class="project-header">
+			<a href={base + 'research'} class="back-link">&larr; research</a>
+			<div class="project-meta">
+				<span class="project-date">{formattedDate}</span>
+				<span class={`status-badge status-${status}`}>{statusLabel[status] ?? status}</span>
+			</div>
+			<h1>{title}</h1>
+			<div class="project-tags">
+				{tags.map(tag => (
+					<span class="tag">{tag}</span>
+				))}
+			</div>
+			{links && Object.values(links).some(Boolean) && (
+				<div class="project-links">
+					{links.github && <a href={links.github} class="link-btn" target="_blank" rel="noopener">github &rarr;</a>}
+					{links.paper && <a href={links.paper} class="link-btn" target="_blank" rel="noopener">paper &rarr;</a>}
+					{links.demo && <a href={links.demo} class="link-btn" target="_blank" rel="noopener">demo &rarr;</a>}
+				</div>
+			)}
+		</header>
+		<div class="project-content">
+			<slot />
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.project {
+		padding-top: 3rem;
+		padding-bottom: 3rem;
+	}
+
+	.back-link {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		display: inline-block;
+		margin-bottom: 1.25rem;
+	}
+
+	.back-link:hover {
+		color: var(--accent);
+	}
+
+	.project-header {
+		margin-bottom: 2.5rem;
+	}
+
+	.project-meta {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-bottom: 0.75rem;
+	}
+
+	.status-badge {
+		font-size: 0.7rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 0.2rem 0.6rem;
+		border-radius: 3px;
+	}
+
+	.status-active {
+		color: var(--status-active);
+		background: rgba(34, 197, 94, 0.12);
+	}
+
+	.status-in-progress {
+		color: var(--status-progress);
+		background: rgba(245, 158, 11, 0.12);
+	}
+
+	.status-completed,
+	.status-on-hold {
+		color: var(--text-muted);
+		background: rgba(107, 114, 128, 0.12);
+	}
+
+	.project-header h1 {
+		font-size: 2.25rem;
+		line-height: 1.25;
+		margin-bottom: 0.75rem;
+	}
+
+	.project-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.tag {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		border: 1px solid var(--border);
+		border-radius: 3px;
+		padding: 0.15rem 0.5rem;
+	}
+
+	.project-links {
+		display: flex;
+		gap: 1rem;
+	}
+
+	.link-btn {
+		font-size: 0.85rem;
+		color: var(--accent);
+		font-weight: 500;
+	}
+
+	.link-btn:hover {
+		color: var(--text-primary);
+	}
+
+	.project-content {
+		line-height: 1.75;
+	}
+
+	.project-content :global(p) {
+		margin-bottom: 1.25rem;
+	}
+
+	.project-content :global(h2) {
+		margin-top: 2.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.project-content :global(h3) {
+		margin-top: 2rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.project-content :global(ul),
+	.project-content :global(ol) {
+		margin-bottom: 1.25rem;
+		padding-left: 1.5rem;
+	}
+
+	.project-content :global(li) {
+		margin-bottom: 0.35rem;
+	}
+
+	.project-content :global(blockquote) {
+		border-left: 3px solid var(--accent);
+		padding-left: 1rem;
+		margin: 1.5rem 0;
+		color: var(--text-secondary);
+	}
+
+	.project-content :global(img) {
+		max-width: 100%;
+		border-radius: 6px;
+		margin: 1.5rem 0;
+	}
+
+	.project-content :global(a) {
+		color: var(--accent);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.project-content :global(a:hover) {
+		color: var(--text-primary);
+	}
+
+	.project-content :global(table) {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1.5rem 0;
+	}
+
+	.project-content :global(th),
+	.project-content :global(td) {
+		border: 1px solid var(--border);
+		padding: 0.5rem 0.75rem;
+		text-align: left;
+		font-size: 0.9rem;
+	}
+
+	.project-content :global(th) {
+		color: var(--text-primary);
+		font-weight: 600;
+	}
+
+	.project-content :global(td) {
+		color: var(--text-secondary);
+	}
+
+	@media (max-width: 640px) {
+		.project-header h1 {
+			font-size: 1.75rem;
+		}
+	}
+</style>

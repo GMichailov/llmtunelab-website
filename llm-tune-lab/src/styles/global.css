@@ -6,6 +6,8 @@
 	--accent: #8b5cf6;
 	--border: #374151;
 	--code-bg: #1e1e1e;
+	--status-active: #22c55e;
+	--status-progress: #f59e0b;
 	--max-width: 680px;
 	--font-body: 'Inter', system-ui, -apple-system, sans-serif;
 	--font-mono: 'Fira Code', ui-monospace, monospace;

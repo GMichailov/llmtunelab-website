@@ -8,6 +8,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const navLinks = [
 	{ href: '/', label: 'index' },
+	{ href: '/research', label: 'research' },
 	{ href: '/archive', label: 'archive' },
 	{ href: '/about', label: 'about' },
 ];
@@ -23,7 +24,7 @@ const navLinks = [
 			{navLinks.map(link => (
 				<a
 					href={base + link.href.slice(1)}
-					class:list={['nav-link', { active: currentPath === link.href }]}
+					class:list={['nav-link', { active: currentPath === link.href || (link.href === '/research' && currentPath.startsWith('/projects')) }]}
 				>
 					{link.label}
 				</a>
