@@ -4,7 +4,7 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
 	site: 'https://gmichailov.github.io',
-	base: '/llmtunelab',
+	base: '/llmtunelab-website',
 	integrations: [mdx()],
 	markdown: {
 		shikiConfig: {
