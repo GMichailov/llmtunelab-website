@@ -1,0 +1,3 @@
+- Create mission statement on the importance of LoRA and why it is the future.
+- Create project for running edge inference on extremely small hardware on the CPU with Raspberry Pi.
+- Create Repo and start designing debate-to-distill
