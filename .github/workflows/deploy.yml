@@ -18,11 +18,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: withastro/action@v3
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
-          path: llm-tune-lab
+      - name: Install dependencies
+        run: npm ci
+        working-directory: llm-tune-lab
+      - name: Build Astro site
+        run: npm run build
+        working-directory: llm-tune-lab
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: llm-tune-lab/dist
 
   deploy:
     needs: build

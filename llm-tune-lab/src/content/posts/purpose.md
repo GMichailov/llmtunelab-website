@@ -1,7 +1,7 @@
 ---
 title: "The Future of Artificial Intelligence"
 date: 2026-05-22
-category: "Artificial Intelligence"
+category: "models"
 excerpt: "Our analysis of the current state of AI and the our hypothesis for the future."
 ---
 
